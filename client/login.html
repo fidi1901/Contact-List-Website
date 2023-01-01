@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		.center{
+			text-align: center;
+		}
+		
+	</style>
+    <meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    <link rel="stylesheet" type="text/css" href="client/css/style.css">
+	    <title>Welcome to Node.js</title>
+	    <style type="text/css">
+              .jumbotron { text-align: center; }
+    </style>
+</head>
+<body>
+    <h1 class="center">Login Page</h1>
+    <p class="center">Please enter your user name and password. Both are case sensitive.</p>
+	<form name ="login" method="post" action="/login" id="login">
+		<div class="center">
+		<label for="userInput"><strong>User:</strong></label>
+		<input id="userInput" pattern="[a-zA-Z0-9\s]+" title="Name must be alphanumeric"
+		required="">
+		</div>
+		<div class="center">
+		<label for="passwordInput"><strong>Password:</strong></label>
+		<input type="password" id="passwordInput" pattern="[a-zA-Z0-9\s]+" required="">
+		<br>
+		<span id="error"></span>
+		</div>
+		<button type="submit" class="btn btn-block btn-primary">Submit</button>
+	</form>
+
+</body>
+<script>
+	$(document).ready(function () { 
+           $('#login').submit(function (event) { 
+                        event.preventDefault(); 
+                  //collect the form data using Id Selector for whatever data you need to send to server 
+                        let login= $('#userInput').val(); 
+                        let password= $('#passwordInput').val(); 
+                        $.post('/check-login', 
+                            {"login": login, "password": password}, 
+							(data) => { 
+								console.log(data); 
+                            if (data.status === 'success') { 
+                                 //pseudo code 
+                                 //Make sure error message is not displayed 
+                                 //Re-direct to display all contacts page, 
+                                window.location.href = '/AllContacts'; 
+                            } 
+                            else{
+							  //Display error message 
+							  console.log("error");
+							  var error = document.getElementById("error");
+							  error.textContent = "Error: Please enter a username and/or password";
+							  error.style.color = "red";
+                            } 
+                        }); 
+                }); 
+            }); 
+</script>
+</html>
